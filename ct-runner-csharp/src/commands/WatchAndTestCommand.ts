@@ -6,9 +6,11 @@ export class WatchAndTestCommand implements ICommand {
     public static get EXIT_TEXT(): string { return "dotnet exit code"; }
     public static get STACK_TRACE_TEXT(): string { return "Stack Trace:"; }
 
-    buffer: string[]
+    private buffer: string[]
 
-    constructor() {}
+    constructor() {
+        this.buffer = [];
+    }
 
     public execute(): void {
         // rmdir /s /q &&
@@ -33,11 +35,9 @@ export class WatchAndTestCommand implements ICommand {
             return value.localeCompare('');
         });
 
-        for (var i = 0; i < splitted.length; i++)
-        {
+        for (var i = 0; i < splitted.length; i++) {
             this.buffer.push(splitted[i]);
-            if (splitted[i].search(WatchAndTestCommand.EXIT_TEXT) != -1)
-            {
+            if (splitted[i].search(WatchAndTestCommand.EXIT_TEXT) != -1) {
                 var exit_code = parseInt(splitted[i][splitted[i].length - 2]);
                 if (exit_code != 0) {
                     this.getFilesInfo(this.buffer);
