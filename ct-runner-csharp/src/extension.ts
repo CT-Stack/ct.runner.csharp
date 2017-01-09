@@ -14,7 +14,7 @@ export function activate(context: vscode.ExtensionContext) {
     console.log('Congratulations, your extension "ct-runner-csharp" is now active!');
 
     var disposable = vscode.commands.registerCommand('watchAndTest', () => {
-        var watchAndTestCmmand = new WatchAndTestCommand();
+        var watchAndTestCmmand = new WatchAndTestCommand("C:\\Users\\Grzegorz\\Desktop\\dotnetcore\\tests", "test.xml");
         watchAndTestCmmand.execute();
 	});
 	context.subscriptions.push(disposable);
