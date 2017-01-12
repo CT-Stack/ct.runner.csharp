@@ -73,10 +73,17 @@ export class WatchAndTestCommand implements ICommand {
         if (!filePath) {
             return;
         }
-        this.xmlFileParser.xmlFileToJsonAsync(filePath, this.xmlFileParsedCallback, this);
+        try {
+            this.xmlFileParser.xmlFileToJsonAsync(filePath, this.xmlFileParsedCallback, this);
+        } catch (e) {
+            console.log(e.message);
+        }
     }
 
     private xmlFileParsedCallback(parsedFileContent: string | Buffer, error: Error, self: any): void {
+        if (error) {
+            return;
+        }
         if (!parsedFileContent) {
             return;
         }
@@ -163,6 +170,13 @@ export class WatchAndTestCommand implements ICommand {
         if (!testName) {
             return null;
         }
-        return this.grepTool.grep(this.workingDir, testName);
+        var fileLinePair: FileLinePair = null;
+        try {
+            fileLinePair = this.grepTool.grep(this.workingDir, testName);
+        } catch (e) {
+            console.log(e.message);
+            return null;
+        }
+        return fileLinePair;
     }
 }

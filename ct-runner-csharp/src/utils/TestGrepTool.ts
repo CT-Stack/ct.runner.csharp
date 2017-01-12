@@ -1,37 +1,36 @@
 import {IGrepTool} from './IGrepTool'
+import {IFileSystem} from './IFileSystem'
+import {FileSystem} from './FileSystem'
 import {FileLinePair} from './FileLinePair'
 
 export class TestGrepTool implements IGrepTool {
 
-    private fileSystem;
-
-    constructor() {
-        this.fileSystem = require("fs");
-    }
+    constructor(private fileSystem: IFileSystem  = new FileSystem())
+    {}
 
     public grep(file: string, lookingPhrase: string): FileLinePair {
         if (!file || !lookingPhrase) {
             return null;
         }
-        var fileLinePair: FileLinePair = null;
-        return this.isDirectory(file) ? this.grepDir(file, lookingPhrase) : this.grepFile(file, lookingPhrase);
+        return this.fileSystem.isDirectory(file) ? this.grepDir(file, lookingPhrase) : this.grepFile(file, lookingPhrase);
     }
 
     private grepDir(dir: string, lookingPhrase: string): FileLinePair {
         if (!dir || !lookingPhrase) {
             return null;
         }
-        if (!this.isDirectory(dir)) {
+        if (!this.fileSystem.isDirectory(dir)) {
             return null;
         }
-        if (dir.localeCompare("bin") == 0 || dir.localeCompare("obj") == 0) {
+        var dirName = this.getDirNameFromFullPath(dir);
+        if (dirName.localeCompare("bin") === 0 || dirName.localeCompare("obj") === 0) {
             return null;
         }
-        var files = this.fileSystem.readdirSync(dir);
+        var files = this.fileSystem.readDirSync(dir);
         if (files) {
             for (var file of files) {
                 var fullPath = dir + "\\" + file;
-                var localResult = this.isDirectory(fullPath) ? this.grepDir(fullPath, lookingPhrase) :
+                var localResult = this.fileSystem.isDirectory(fullPath) ? this.grepDir(fullPath, lookingPhrase) :
                     this.grepFile(fullPath, lookingPhrase);
                 if (localResult) {
                     return localResult;
@@ -45,19 +44,21 @@ export class TestGrepTool implements IGrepTool {
         if (!file || !lookingPhrase) {
             return null;
         }
-        if (this.isDirectory(file)) {
+        if (this.fileSystem.isDirectory(file)) {
             return null;
         }
-        var line = this.getLineOfLookingPhrase(file, lookingPhrase);
-        if (line > 0) {
-            return new FileLinePair(file, line);
+        var line = 0;
+        try {
+            line = this.getLineOfLookingPhrase(file, lookingPhrase);
+        } catch (e) {
+            return null;
         }
-        return null;
+        return new FileLinePair(file, line);
     }
 
     private getLineOfLookingPhrase(file: string, lookingPhrase: string): number {
         if (!file || !lookingPhrase) {
-            return -1;
+            throw new Error("File path or looking phrase not given");
         }
         var fileContent = this.readFile(file);
         var testNameSplitted = lookingPhrase.split("."); // className.testName
@@ -71,7 +72,7 @@ export class TestGrepTool implements IGrepTool {
             }
             lineNumber++;
         }
-        return -1;
+        throw new Error("Looking phrase not found");
     }
 
     private readFile(filePath: string): string[] {
@@ -82,11 +83,10 @@ export class TestGrepTool implements IGrepTool {
         return content.split("\n");
     }
 
-    private isDirectory(file: string): boolean {
-        if (!file) {
-            return false;
+    private getDirNameFromFullPath(fullPath: string): string {
+        if (!fullPath) {
+            return "";
         }
-        var fileSystem = require("fs");
-        return fileSystem.lstatSync(file).isDirectory();
+        return fullPath.substr(fullPath.lastIndexOf("\\") + 1);
     }
 }

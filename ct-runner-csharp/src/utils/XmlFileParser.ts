@@ -1,24 +1,29 @@
 import {IXmlFileParser} from './IXmlFileParser'
+import {IFileSystem} from './IFileSystem'
+import {FileSystem} from './FileSystem'
+import {IXmlToJsonParser} from './IXmlToJsonParser'
+import {XmlToJsonParser} from './XmlToJsonParser'
 
 export class XmlFileParser implements IXmlFileParser {
-    private fileSystem;
-    private xml2js;
 
-    constructor () {
-        this.fileSystem = require("fs");
-        this.xml2js = require("xml2js");
-    }
+    constructor (private fileSystem: IFileSystem = new FileSystem(),
+                 private xml2js: IXmlToJsonParser = new XmlToJsonParser())
+    {}
 
     xmlFileToJsonAsync(filePath: string, callback: (parsedFileContent: string | Buffer, error: Error, self: any) => void, self: any): void {
+        var error: Error = null;
         if (!filePath) {
-            return null;
+            error = new Error("File path not given");
         }
         var fileContent = this.fileSystem.readFileSync(filePath, "utf-8");
         if (!fileContent) {
-            return null;
+            error = new Error("Cannot read file");
         }
-        var parseStringAsyncMethod = this.xml2js.parseString;
-        parseStringAsyncMethod(fileContent, function(err, result) {
+        if (error) {
+            callback(null, error, self);
+            return;
+        }
+        this.xml2js.parseString(fileContent, function(err, result) {
             callback(result, err, self);
         });
     }
