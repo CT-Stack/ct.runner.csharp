@@ -11,14 +11,14 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:watchAndTest"
+        "onCommand:ct.runTestObserver"
     ],
     "main": "./out/src/extension",
     "contributes": {
         "commands": [
             {
-                "command": "watchAndTest",
-                "title": "WatchAndTest"
+                "command": "ct.runTestObserver",
+                "title": "ct.runTestObserver"
             }
         ]
     },
