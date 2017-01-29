@@ -19,7 +19,8 @@ class TestGrepTool {
             return null;
         }
         var dirName = this.getDirNameFromFullPath(dir);
-        if (dirName.localeCompare("bin") === 0 || dirName.localeCompare("obj") === 0) {
+        if (dirName.localeCompare("bin") === 0 || dirName.localeCompare("obj") === 0 ||
+            dirName.localeCompare("node_modules") === 0) {
             return null;
         }
         var files = this.fileSystem.readDirSync(dir);
@@ -56,14 +57,15 @@ class TestGrepTool {
             throw new Error("File path or looking phrase not given");
         }
         var fileContent = this.readFile(file);
-        var testNameSplitted = lookingPhrase.split("."); // className.testName
+        var testNameSplitted = lookingPhrase.split("."); // namespace.className.testName
         var inProperClass = false;
         var lineNumber = 0;
         for (var line of fileContent) {
             if (line.search("class") !== -1) {
-                inProperClass = line.search(testNameSplitted[0]) !== -1;
+                var className = testNameSplitted[testNameSplitted.length - 2];
+                inProperClass = line.search(className) !== -1;
             }
-            else if (line.search(testNameSplitted[1]) !== -1 && inProperClass) {
+            else if (line.search(testNameSplitted[testNameSplitted.length - 1]) !== -1 && inProperClass) {
                 return lineNumber;
             }
             lineNumber++;
