@@ -24,6 +24,7 @@ export function activate(context: vscode.ExtensionContext) {
         watchAndTestCmmand.execute();
 	});
 	context.subscriptions.push(disposable);
+    vscode.window.showInformationMessage("CTRunner is running.")
 }
 
 // this method is called when your extension is deactivated
