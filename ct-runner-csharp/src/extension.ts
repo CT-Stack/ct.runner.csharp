@@ -17,7 +17,7 @@ export function activate(context: vscode.ExtensionContext) {
     var disposable = vscode.commands.registerCommand('ct.runTestObserver', () => {
         var currentWorkingDir = vscode.workspace.rootPath;
         if (!fs.existsSync(currentWorkingDir)) {
-            vscode.window.showErrorMessage("Root path doesn't exist");
+            vscode.window.showErrorMessage("Folder must be open before start.");
             return;
         }
         var watchAndTestCmmand = new WatchAndTestCommand(currentWorkingDir, "test_results.xml");
