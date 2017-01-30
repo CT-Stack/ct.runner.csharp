@@ -1,6 +1,6 @@
 "use strict";
-const FileSystem_1 = require("./FileSystem");
-const FileLinePair_1 = require("./FileLinePair");
+const FileSystem_1 = require('./FileSystem');
+const FileLinePair_1 = require('./FileLinePair');
 class TestGrepTool {
     constructor(fileSystem = new FileSystem_1.FileSystem()) {
         this.fileSystem = fileSystem;

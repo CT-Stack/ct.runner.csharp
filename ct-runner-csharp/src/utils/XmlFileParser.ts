@@ -11,15 +11,20 @@ export class XmlFileParser implements IXmlFileParser {
     {}
 
     xmlFileToJsonAsync(filePath: string, callback: (parsedFileContent: string | Buffer, error: Error, self: any) => void, self: any): void {
-        var error: Error = null;
         if (!filePath) {
-            error = new Error("File path not given");
+            var error = new Error("File path not given");
+            callback(null, error, self);
+            return;
+        }
+        if (!this.fileSystem.isDirectory(filePath))
+        {
+            var error = new Error("Directory not exists");
+            callback(null, error, self);
+            return;
         }
         var fileContent = this.fileSystem.readFileSync(filePath, "utf-8");
         if (!fileContent) {
-            error = new Error("Cannot read file");
-        }
-        if (error) {
+            var error = new Error("Cannot read file");
             callback(null, error, self);
             return;
         }

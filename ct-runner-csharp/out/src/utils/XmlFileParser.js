@@ -1,21 +1,25 @@
 "use strict";
-const FileSystem_1 = require("./FileSystem");
-const XmlToJsonParser_1 = require("./XmlToJsonParser");
+const FileSystem_1 = require('./FileSystem');
+const XmlToJsonParser_1 = require('./XmlToJsonParser');
 class XmlFileParser {
     constructor(fileSystem = new FileSystem_1.FileSystem(), xml2js = new XmlToJsonParser_1.XmlToJsonParser()) {
         this.fileSystem = fileSystem;
         this.xml2js = xml2js;
     }
     xmlFileToJsonAsync(filePath, callback, self) {
-        var error = null;
         if (!filePath) {
-            error = new Error("File path not given");
+            var error = new Error("File path not given");
+            callback(null, error, self);
+            return;
+        }
+        if (!this.fileSystem.isDirectory(filePath)) {
+            var error = new Error("Directory not exists");
+            callback(null, error, self);
+            return;
         }
         var fileContent = this.fileSystem.readFileSync(filePath, "utf-8");
         if (!fileContent) {
-            error = new Error("Cannot read file");
-        }
-        if (error) {
+            var error = new Error("Cannot read file");
             callback(null, error, self);
             return;
         }
