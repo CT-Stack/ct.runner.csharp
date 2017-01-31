@@ -1,13 +1,13 @@
 "use strict";
-const XmlFileParser_1 = require('../utils/XmlFileParser');
-const ProcessFinder_1 = require('../utils/ProcessFinder');
-const TestGrepTool_1 = require('../utils/TestGrepTool');
-const TestSetResult_1 = require('../contract/TestSetResult');
-const TestResult_1 = require('../contract/TestResult');
-const TestTransferObject_1 = require('../contract/TestTransferObject');
-const TestStatus_1 = require('../contract/TestStatus');
-const ExceptionResult_1 = require('../contract/ExceptionResult');
-const vscode = require('vscode');
+const XmlFileParser_1 = require("../utils/XmlFileParser");
+const ProcessFinder_1 = require("../utils/ProcessFinder");
+const TestGrepTool_1 = require("../utils/TestGrepTool");
+const TestSetResult_1 = require("../contract/TestSetResult");
+const TestResult_1 = require("../contract/TestResult");
+const TestTransferObject_1 = require("../contract/TestTransferObject");
+const TestStatus_1 = require("../contract/TestStatus");
+const ExceptionResult_1 = require("../contract/ExceptionResult");
+const vscode = require("vscode");
 class TestInfo {
     constructor(name, status, path = "", line = 0, exceptionResult) {
         this.name = name;

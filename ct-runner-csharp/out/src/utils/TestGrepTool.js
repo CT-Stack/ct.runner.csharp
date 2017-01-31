@@ -1,6 +1,6 @@
 "use strict";
-const FileSystem_1 = require('./FileSystem');
-const FileLinePair_1 = require('./FileLinePair');
+const FileSystem_1 = require("./FileSystem");
+const FileLinePair_1 = require("./FileLinePair");
 class TestGrepTool {
     constructor(fileSystem = new FileSystem_1.FileSystem()) {
         this.fileSystem = fileSystem;
@@ -12,14 +12,8 @@ class TestGrepTool {
         return this.fileSystem.isDirectory(file) ? this.grepDir(file, lookingPhrase) : this.grepFile(file, lookingPhrase);
     }
     grepDir(dir, lookingPhrase) {
-        if (!dir || !lookingPhrase) {
-            return null;
-        }
-        if (!this.fileSystem.isDirectory(dir)) {
-            return null;
-        }
         var dirName = this.getDirNameFromFullPath(dir);
-        if (dirName.localeCompare("bin") === 0 || dirName.localeCompare("obj") === 0 ||
+        if (dirName === "" || dirName.localeCompare("bin") === 0 || dirName.localeCompare("obj") === 0 ||
             dirName.localeCompare("node_modules") === 0) {
             return null;
         }
@@ -37,12 +31,6 @@ class TestGrepTool {
         return null;
     }
     grepFile(file, lookingPhrase) {
-        if (!file || !lookingPhrase) {
-            return null;
-        }
-        if (this.fileSystem.isDirectory(file)) {
-            return null;
-        }
         var line = 0;
         try {
             line = this.getLineOfLookingPhrase(file, lookingPhrase);
@@ -53,9 +41,6 @@ class TestGrepTool {
         return new FileLinePair_1.FileLinePair(file, line);
     }
     getLineOfLookingPhrase(file, lookingPhrase) {
-        if (!file || !lookingPhrase) {
-            throw new Error("File path or looking phrase not given");
-        }
         var fileContent = this.readFile(file);
         var testNameSplitted = lookingPhrase.split("."); // namespace.className.testName
         var inProperClass = false;

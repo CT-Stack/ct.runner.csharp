@@ -4,10 +4,10 @@
 //
 "use strict";
 // The module 'assert' provides assertion methods from node
-const assert = require('assert');
-const XmlFileParser_1 = require('./../../src/utils/XmlFileParser');
-const FileSystemMock_1 = require('./mocks/FileSystemMock');
-const XmlToJsonParserMock_1 = require('./mocks/XmlToJsonParserMock');
+const assert = require("assert");
+const XmlFileParser_1 = require("./../../src/utils/XmlFileParser");
+const FileSystemMock_1 = require("./mocks/FileSystemMock");
+const XmlToJsonParserMock_1 = require("./mocks/XmlToJsonParserMock");
 // Defines a Mocha test suite to group tests of similar kind together
 suite("XmlFileParser tests", () => {
     // Defines a Mocha unit test

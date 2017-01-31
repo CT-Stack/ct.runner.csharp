@@ -1,6 +1,6 @@
 "use strict";
-const FileSystem_1 = require('./FileSystem');
-const XmlToJsonParser_1 = require('./XmlToJsonParser');
+const FileSystem_1 = require("./FileSystem");
+const XmlToJsonParser_1 = require("./XmlToJsonParser");
 class XmlFileParser {
     constructor(fileSystem = new FileSystem_1.FileSystem(), xml2js = new XmlToJsonParser_1.XmlToJsonParser()) {
         this.fileSystem = fileSystem;

@@ -16,14 +16,8 @@ export class TestGrepTool implements IGrepTool {
     }
 
     private grepDir(dir: string, lookingPhrase: string): FileLinePair {
-        if (!dir || !lookingPhrase) {
-            return null;
-        }
-        if (!this.fileSystem.isDirectory(dir)) {
-            return null;
-        }
         var dirName = this.getDirNameFromFullPath(dir);
-        if (dirName.localeCompare("bin") === 0 || dirName.localeCompare("obj") === 0 ||
+        if (dirName === "" || dirName.localeCompare("bin") === 0 || dirName.localeCompare("obj") === 0 ||
                 dirName.localeCompare("node_modules") === 0) {
             return null;
         }
@@ -42,12 +36,6 @@ export class TestGrepTool implements IGrepTool {
     }
 
     private grepFile(file: string, lookingPhrase: string): FileLinePair {
-        if (!file || !lookingPhrase) {
-            return null;
-        }
-        if (this.fileSystem.isDirectory(file)) {
-            return null;
-        }
         var line = 0;
         try {
             line = this.getLineOfLookingPhrase(file, lookingPhrase);
@@ -58,9 +46,6 @@ export class TestGrepTool implements IGrepTool {
     }
 
     private getLineOfLookingPhrase(file: string, lookingPhrase: string): number {
-        if (!file || !lookingPhrase) {
-            throw new Error("File path or looking phrase not given");
-        }
         var fileContent = this.readFile(file);
         var testNameSplitted = lookingPhrase.split("."); // namespace.className.testName
         var inProperClass = false;
