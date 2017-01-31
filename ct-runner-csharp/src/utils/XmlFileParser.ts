@@ -16,12 +16,6 @@ export class XmlFileParser implements IXmlFileParser {
             callback(null, error, self);
             return;
         }
-        if (!this.fileSystem.isDirectory(filePath))
-        {
-            var error = new Error("Directory not exists");
-            callback(null, error, self);
-            return;
-        }
         var fileContent = this.fileSystem.readFileSync(filePath, "utf-8");
         if (!fileContent) {
             var error = new Error("Cannot read file");
