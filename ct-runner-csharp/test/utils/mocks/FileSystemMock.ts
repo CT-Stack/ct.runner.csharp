@@ -2,7 +2,7 @@ import { IFileSystem } from './../../../src/utils/IFileSystem'
 
 
 export class FileSystemMock implements IFileSystem {
-    constructor(private content: string, private directoryExists: boolean, private readDirs?: string[], private isDirectoryFunction?: (file: String | Buffer | Number) => boolean)
+    constructor(private content: string, private directoryExists: boolean, private readDirs?: string[], private isDirectoryFunction?: (file: String | Buffer | Number) => boolean, private fileExists?: boolean)
     { }
 
     public readDirSync(path: string | Buffer): string[] {
@@ -17,6 +17,11 @@ export class FileSystemMock implements IFileSystem {
         if (this.isDirectoryFunction === undefined)
         { return this.directoryExists; }
         return this.isDirectoryFunction(file);
+    }
+
+    public fileExistsSync(path: string | Buffer): boolean{
+        if (this.fileExists === undefined) return false;
+        return this.fileExists;
     }
 
 }

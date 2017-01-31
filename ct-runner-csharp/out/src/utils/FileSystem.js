@@ -10,6 +10,9 @@ class FileSystem {
     isDirectory(file) {
         return fs.lstatSync(file).isDirectory();
     }
+    fileExistsSync(path) {
+        return fs.existsSync(path);
+    }
 }
 exports.FileSystem = FileSystem;
 //# sourceMappingURL=FileSystem.js.map

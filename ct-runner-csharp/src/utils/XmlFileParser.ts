@@ -1,18 +1,23 @@
-import {IXmlFileParser} from './IXmlFileParser'
-import {IFileSystem} from './IFileSystem'
-import {FileSystem} from './FileSystem'
-import {IXmlToJsonParser} from './IXmlToJsonParser'
-import {XmlToJsonParser} from './XmlToJsonParser'
+import { IXmlFileParser } from './IXmlFileParser'
+import { IFileSystem } from './IFileSystem'
+import { FileSystem } from './FileSystem'
+import { IXmlToJsonParser } from './IXmlToJsonParser'
+import { XmlToJsonParser } from './XmlToJsonParser'
 
 export class XmlFileParser implements IXmlFileParser {
 
-    constructor (private fileSystem: IFileSystem = new FileSystem(),
-                 private xml2js: IXmlToJsonParser = new XmlToJsonParser())
-    {}
+    constructor(private fileSystem: IFileSystem = new FileSystem(),
+        private xml2js: IXmlToJsonParser = new XmlToJsonParser())
+    { }
 
     xmlFileToJsonAsync(filePath: string, callback: (parsedFileContent: string | Buffer, error: Error, self: any) => void, self: any): void {
         if (!filePath) {
             var error = new Error("File path not given");
+            callback(null, error, self);
+            return;
+        }
+        if (!this.fileSystem.fileExistsSync(filePath)) {
+            var error = new Error("File not exists");
             callback(null, error, self);
             return;
         }
@@ -22,7 +27,7 @@ export class XmlFileParser implements IXmlFileParser {
             callback(null, error, self);
             return;
         }
-        this.xml2js.parseString(fileContent, function(err, result) {
+        this.xml2js.parseString(fileContent, function (err, result) {
             callback(result, err, self);
         });
     }

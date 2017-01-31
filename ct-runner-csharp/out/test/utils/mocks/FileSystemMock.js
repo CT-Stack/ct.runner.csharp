@@ -1,10 +1,11 @@
 "use strict";
 class FileSystemMock {
-    constructor(content, directoryExists, readDirs, isDirectoryFunction) {
+    constructor(content, directoryExists, readDirs, isDirectoryFunction, fileExists) {
         this.content = content;
         this.directoryExists = directoryExists;
         this.readDirs = readDirs;
         this.isDirectoryFunction = isDirectoryFunction;
+        this.fileExists = fileExists;
     }
     readDirSync(path) {
         return this.readDirs;
@@ -17,6 +18,11 @@ class FileSystemMock {
             return this.directoryExists;
         }
         return this.isDirectoryFunction(file);
+    }
+    fileExistsSync(path) {
+        if (this.fileExists === undefined)
+            return false;
+        return this.fileExists;
     }
 }
 exports.FileSystemMock = FileSystemMock;

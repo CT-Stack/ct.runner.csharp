@@ -32,12 +32,12 @@ suite("XmlFileParser tests", () => {
         var sut = new XmlFileParser(fsMock);
         sut.xmlFileToJsonAsync('C:\Users', (parsedFileContent:string | Buffer, error: Error, self: any)=> {
             assert.notEqual(error, null);
-            assert.equal(error.message, "Directory not exists");
+            assert.equal(error.message, "File not exists");
         }, this);
     });
 
     test("When filecontent is empty then call callback with Error", () => {
-        var fsMock = new FileSystemMock("", true);
+        var fsMock = new FileSystemMock("", true, undefined, undefined, true);
         var sut = new XmlFileParser(fsMock);
         sut.xmlFileToJsonAsync('C:\Users', (parsedFileContent:string | Buffer, error: Error, self: any)=> {
             assert.notEqual(error, null);
@@ -47,7 +47,7 @@ suite("XmlFileParser tests", () => {
 
     test("When filecontent is not empty then call xml2js", () => {
         var xml2jsMock = new XmlToJsonParserMock();
-        var fsMock = new FileSystemMock("correct content", true);
+        var fsMock = new FileSystemMock("correct content", true, undefined, undefined, true);
         var sut = new XmlFileParser(fsMock, xml2jsMock);
         sut.xmlFileToJsonAsync('C:\Users', (parsedFileContent:string | Buffer, error: Error, self: any)=> {
         }, this);

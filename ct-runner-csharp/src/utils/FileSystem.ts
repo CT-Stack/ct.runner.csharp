@@ -13,4 +13,8 @@ export class FileSystem implements IFileSystem {
     public isDirectory(file: string | Buffer): boolean {
         return fs.lstatSync(file).isDirectory();
     }
+
+    public fileExistsSync(path: string | Buffer): boolean {
+        return fs.existsSync(path);
+    }
 }

@@ -12,8 +12,8 @@ class XmlFileParser {
             callback(null, error, self);
             return;
         }
-        if (!this.fileSystem.isDirectory(filePath)) {
-            var error = new Error("Directory not exists");
+        if (!this.fileSystem.fileExistsSync(filePath)) {
+            var error = new Error("File not exists");
             callback(null, error, self);
             return;
         }
